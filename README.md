@@ -14,7 +14,7 @@ Au lancement, on peut choisir :
 
 Chaque thread affiche ou écrit son numéro plusieurs fois.
 
-Pour éviter que les écritures se mélangent, j’utilise un **Mutex** afin qu’un seul thread puisse écrire à la fois.
+Pour éviter que les écritures se mélangent, j’utilise un Mutex afin qu’un seul thread puisse écrire à la fois.
 
 
 
