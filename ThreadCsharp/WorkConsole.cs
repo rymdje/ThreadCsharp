@@ -1,36 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace ThreadCsharp
 {
     internal class WorkConsole
     {
-        public int InstanceNumber { private get; set; }
-        public Mutex mutex { get; internal set; }
-        public int Couleur { get; set; }
-
-        public WorkConsole()
-        {
-            InstanceNumber = 0;
-        }
+        public int InstanceNumber { get; set; }
+        public int Couleur { get; set; } = 7; 
+        public Mutex? Mutex { get; set; }
 
         public void Run()
         {
-            for (int i = 0; i < 100; i++)
-            {
-                //
-                string toWrite = "Thread " + InstanceNumber.ToString();
-                //
-                mutex.WaitOne();
-                //
-                Console.ForegroundColor = (ConsoleColor)Couleur;
-                Console.WriteLine(toWrite);
-                mutex.ReleaseMutex();
-            }
+            if (Mutex == null) return;
 
+            for (int i = 0; i < 50; i++)
+            {
+                Mutex.WaitOne();
+                try
+                {
+                    Console.ForegroundColor = (ConsoleColor)Couleur;
+                    Console.WriteLine($"Thread {InstanceNumber} - {i + 1}");
+                    Console.ResetColor();
+                }
+                finally
+                {
+                    Mutex.ReleaseMutex();
+                }
+
+                Thread.Sleep(1);
+            }
         }
     }
 }
